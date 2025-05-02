@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Tours = () => {
-  const tours = [
+  const allTours = [
     {
       id: 1,
       title: 'European Adventure',
       image: '/europe.avif',
       duration: '10 Days',
       price: '$2500',
-      type: 'Popular'
+      type: 'Adventure'
     },
     {
       id: 2,
@@ -17,19 +17,37 @@ const Tours = () => {
       duration: '14 Days',
       price: '$2800',
       type: 'Cultural'
+    },
+    {
+      id: 3,
+      title: 'Desert Safari',
+      image: '/yellow.jpg',
+      duration: '7 Days',
+      price: '$1800',
+      type: 'Adventure'
     }
   ];
-  
+
+  const [filter, setFilter] = useState('All');
+
+  const filteredTours = filter === 'All' ? allTours : allTours.filter(tour => tour.type === filter);
 
   return (
     <div className="tours-page">
       <div className="tour-filters">
-        <button className="filter-btn active">All</button>
-        <button className="filter-btn">Adventure</button>
-        <button className="filter-btn">Cultural</button>
+        {['All', 'Adventure', 'Cultural'].map(type => (
+          <button
+            key={type}
+            className={`filter-btn ${filter === type ? 'active' : ''}`}
+            onClick={() => setFilter(type)}
+          >
+            {type}
+          </button>
+        ))}
       </div>
+
       <div className="tour-grid">
-        {tours.map(tour => (
+        {filteredTours.map(tour => (
           <div className="tour-card" key={tour.id}>
             <div 
               className="tour-image" 
